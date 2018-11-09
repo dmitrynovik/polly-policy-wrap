@@ -73,20 +73,20 @@ namespace TimeoutRetryPolicyFactoryTest
             var perRetryTimeoutPolicy = Policy
                 .TimeoutAsync(PerRetryTimeout, TimeoutStrategy.Pessimistic, async (context, span, arg3) =>
                 {
-                    Trace.TraceError($"Timout {span} Sending Message");
+                    Trace.TraceError($"{DateTime.Now}: Timout {span} Sending Message");
                 });
 
             var retryPolicy = Policy
                 .Handle<Exception>()
                 .WaitAndRetryAsync(RetryCount, retryAttemp => RetryWaitTime, (exception, span, context) =>
                 {
-                    Trace.TraceError($"Error Sending Message, retry attempt: {span}, error: {exception}");
+                    Trace.TraceError($"{DateTime.Now}: Error Sending Message, retry attempt: {span}, error: {exception}");
                 });
 
             var totalTimeoutPolicy = Policy
                 .TimeoutAsync(TotalTimeout, TimeoutStrategy.Pessimistic, async (context, span, arg3) =>
                 {
-                    Trace.TraceError($"Timout {span} Sending Message");
+                    Trace.TraceError($"{DateTime.Now}: Timout {span} Sending Message");
                 });
 
             var policy = Policy.WrapAsync(totalTimeoutPolicy, retryPolicy, perRetryTimeoutPolicy);
