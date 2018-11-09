@@ -11,12 +11,6 @@ namespace TimeoutRetryPolicyFactoryTest
         Policy Create();
     }
 
-    public interface IPolicyLogger
-    {
-        void LogInfo(string id, TimeSpan duration, string message = null);
-        void LogError(string id, TimeSpan duration, string error, Exception ex = null);
-    }
-
     [Serializable]
     public class TimeoutRetryPolicySettings
     {
